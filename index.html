@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Explore M1–M3 wafer topography, material cross-sections, and developed resist thickness on real layouts.">
+<title>Wafer Explorer</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="style.css">
+<script defer src="data.js"></script>
+<script type="module" src="viewer.js"></script>
+</head>
+<body>
+<header class="mast"><div class="wrap mast-inner"><strong class="brand"><span aria-hidden="true">◈</span> Wafer Explorer</strong><span class="source"><i></i> Multilayer simulation</span></div></header>
+<main class="wrap">
+  <div class="intro">
+    <div><h1>Wafer Explorer</h1><p>Follow a real layout through M1, M2, and M3.</p></div>
+    <div class="case"><label for="case-select">Real layout</label><select id="case-select"></select></div>
+  </div>
+  <section aria-label="Process layer" class="controls">
+    <div class="steps"><button type="button" data-layer="0" aria-pressed="true"><b>M1</b><span>First layer</span></button><button type="button" data-layer="1" aria-pressed="false"><b>M2</b><span>Second layer</span></button><button type="button" data-layer="2" aria-pressed="false"><b>M3</b><span>Third layer</span></button></div>
+    <button type="button" class="subtle" id="play">▷ Play sequence</button>
+  </section>
+  <p id="flow" class="flow" aria-live="polite">Loading layout…</p>
+  <div class="grid" id="views" inert>
+    <div class="window-size" role="group" aria-label="Selection window dimensions">
+      <strong>Window size</strong>
+      <label for="window-width">X width <span><input type="number" id="window-width" min="8" max="1024" step="8" inputmode="numeric"> nm</span></label>
+      <label for="window-height">Y height <span><input type="number" id="window-height" min="8" max="1024" step="8" inputmode="numeric"> nm</span></label>
+    </div>
+    <section class="card">
+      <header class="card-head"><div><h2>Wafer topography</h2><p id="state-label"></p></div><div class="toggle" aria-label="Wafer state"><button id="incoming" type="button">Input</button><button id="outgoing" type="button">After process</button></div></header>
+      <figure class="figure">
+        <div class="wafer-frame"><div class="map wafer-map" id="wafer-map"><canvas id="wafer" tabindex="0" aria-label="Wafer relief. Click or use arrow keys to move the cross-section."></canvas><div id="slice-mark" class="slice-overlay" aria-hidden="true"></div><span class="axes" aria-hidden="true">+Y ↑　+X →</span></div></div>
+        <div class="scale"><span>0</span><i class="wafer-scale"></i><span id="wafer-max"></span></div>
+        <figcaption id="window-caption">Surface relief relative to the minimum in this window.</figcaption>
+      </figure>
+    </section>
+    <section class="card">
+      <header class="card-head"><div><h2>Developed resist thickness</h2><p>Full layout · 1,024 × 1,024 nm²</p></div><div class="toggle" aria-label="Resist display"><button id="thickness" type="button">Thickness</button><button id="opening" type="button">10 nm openings</button></div></header>
+      <figure class="figure">
+        <button type="button" class="map resist-map" id="resist-map" aria-label="Move the selection window on the resist map" aria-pressed="false" aria-describedby="resist-caption" disabled><canvas id="resist" width="128" height="128" aria-hidden="true"></canvas><span id="roi-mark" class="roi-mark" aria-hidden="true"></span><span id="roi-slice" class="slice-overlay" aria-hidden="true"></span><span class="axes" aria-hidden="true">+Y ↑　+X →</span></button>
+        <div class="scale" id="resist-scale"><span>0</span><i class="resist-scale"></i><span>135 nm</span></div>
+        <figcaption><span id="resist-caption" aria-live="polite"></span><output id="window-bounds"></output></figcaption>
+      </figure>
+    </section>
+    <section class="card detail">
+      <header class="card-head"><div><h2>3D material view</h2><p>Green outline marks the selected footprint. Drag to rotate.</p></div><button type="button" id="reset-view" class="small">Reset view</button></header>
+      <canvas id="volume" width="760" height="440" tabindex="0" aria-label="Rotatable three-dimensional wafer material view"></canvas>
+    </section>
+    <section class="card detail">
+      <header class="card-head"><div><h2>Material cross-section</h2><p id="slice-position"></p></div><div class="toggle" aria-label="Cross-section direction"><button id="section-x" type="button">Along X</button><button id="section-y" type="button">Along Y</button></div></header>
+      <canvas id="section" width="760" height="440" aria-label="Material cross-section with physical coordinates"></canvas>
+      <label class="row">Slice position <input id="slice" type="range" min="0" max="127" value="0"></label>
+    </section>
+  </div>
+  <section class="foot-tools" aria-label="Material display options">
+    <label class="zoom"><input id="zoom" type="checkbox" checked> Focus on interconnects</label>
+    <div class="legend"><span><i style="--swatch:#627993"></i> Silicon</span><span><i style="--swatch:#75bcb7"></i> Oxide</span><span><i style="--swatch:#d69060"></i> TiN</span><span><i style="--swatch:#e9c878"></i> Tungsten</span><span><i style="--swatch:#b3a6df"></i> Nitride</span></div>
+  </section>
+  <p class="footnote">Material views show the full model prediction.</p>
+  <details class="public-files">
+    <summary>Source and data</summary>
+    <div>
+      <a href="viewer.js">Viewer code</a>
+      <a href="material-views.js">Rendering code</a>
+      <a href="case-a.json.gz">Case A data</a>
+      <a href="case-b.json.gz">Case B data</a>
+      <a href="case-c.json.gz">Case C data</a>
+    </div>
+  </details>
+</main>
+</body>
+</html>
